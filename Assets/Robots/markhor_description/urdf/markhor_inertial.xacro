@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<root xmlns:xi="http://www.w3.org/2001/XInclude" 
+    xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="markhor_inertial" params="type">
+        <!-- frame -->
+        <xacro:if value="${type == 'body'}">
+            <inertial>
+                <mass value="26.111" />
+                <origin xyz="-0.00002529 0.00000008 -0.06049447" rpy="0 0 0"/>
+                <inertia 
+                    ixx="0.385006414" ixy="0.0000696244868" ixz="-0.000181517937" 
+                    iyy="0.624959190" iyz="0.000000162897534" 
+                    izz="0.798949961"/>
+            </inertial>
+        </xacro:if>
+
+        <!-- FL Flipper -->
+        <xacro:if value="${type == 'flipper'}">
+            <inertial>
+                <mass value="6.9"/>
+                <origin xyz="0 0.116 0" rpy="0 0 0"/>
+                <inertia 
+                    ixx="0.268046334" ixy="0.000960466048" ixz="0.000262590776" 
+                    iyy="0.0573569235" iyz="0.0000904647719" 
+                    izz="0.232597105"/>
+            </inertial>
+        </xacro:if>
+
+        <xacro:if value="${type == 'virtual'}">
+            <inertial>
+                <mass value="0.0001"/>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <inertia 
+                    ixx="0.001" ixy="0" ixz="0" 
+                    iyy="0.001" iyz="0" 
+                    izz="0.001"/>
+            </inertial>
+        </xacro:if>
+
+    </xacro:macro>
+</root>
+
