@@ -10,6 +10,7 @@
 /[Ll]ogs/
 /[Mm]emoryCaptures/
 
+ROS/.vscode/
 /ROS/build/
 /ROS/devel/
 /ROS/.catkin_workspace

@@ -15,6 +15,7 @@ int main(int argc, char **argv)
 
   ros::NodeHandle n;
 
+  n.advertise<geometry_msgs::Pose>("ovis_target", 1000);
   ros::Publisher joints_pub = n.advertise<ovis_msgs::OvisJoints>("ovis_joints", 1000);
   ros::Subscriber sub = n.subscribe<geometry_msgs::Pose>("ovis_target", 1000, targetCallback);
 
