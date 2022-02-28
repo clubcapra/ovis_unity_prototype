@@ -10,6 +10,11 @@
 /[Ll]ogs/
 /[Mm]emoryCaptures/
 
+/ROS/build/
+/ROS/devel/
+/ROS/.catkin_workspace
+/ROS/src/CMakeLists.txt
+
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
 
