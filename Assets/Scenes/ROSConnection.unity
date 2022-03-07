@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &372802155 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 622370120098328878, guid: 1f34d94aab191af4d94579febeac6dde, type: 3}
+  m_PrefabInstance: {fileID: 622370119482398291}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,6 +304,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1399258785 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 622370121319477859, guid: 1f34d94aab191af4d94579febeac6dde, type: 3}
+  m_PrefabInstance: {fileID: 622370119482398291}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1522538514
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,6 +404,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: -13.62, z: -14.73}
+--- !u!4 &1596518737 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 622370121514772392, guid: 1f34d94aab191af4d94579febeac6dde, type: 3}
+  m_PrefabInstance: {fileID: 622370119482398291}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1624857222
 GameObject:
   m_ObjectHideFlags: 0
@@ -490,6 +505,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1712032051 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 622370119465526444, guid: 1f34d94aab191af4d94579febeac6dde, type: 3}
+  m_PrefabInstance: {fileID: 622370119482398291}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1900570311 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 622370120826413619, guid: 1f34d94aab191af4d94579febeac6dde, type: 3}
+  m_PrefabInstance: {fileID: 622370119482398291}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2027099779 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 622370119732115868, guid: 1f34d94aab191af4d94579febeac6dde, type: 3}
+  m_PrefabInstance: {fileID: 622370119482398291}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &622370119482398291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -571,11 +601,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52963724f1c4b9c4eb1aec59f9c5a595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  topicSim: /sim_joints
   topicJoints: /ovis_joints
   topicTarget: /ovis_target
   target: {fileID: 1522538518}
   joints:
   - {fileID: 622370119482398293}
+  - {fileID: 1900570311}
+  - {fileID: 1596518737}
+  - {fileID: 1712032051}
+  - {fileID: 1399258785}
+  - {fileID: 2027099779}
+  - {fileID: 372802155}
+  updatePerSec: 1
 --- !u!114 &622370119482398295
 MonoBehaviour:
   m_ObjectHideFlags: 0
