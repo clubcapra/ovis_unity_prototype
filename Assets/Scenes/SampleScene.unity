@@ -7870,7 +7870,7 @@ GameObject:
   - component: {fileID: 1680999738}
   - component: {fileID: 1680999737}
   m_Layer: 0
-  m_Name: ovis
+  m_Name: Ovis
   m_TagString: robot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
