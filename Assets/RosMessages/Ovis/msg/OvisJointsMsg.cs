@@ -16,20 +16,20 @@ namespace RosMessageTypes.Ovis
 
         public HeaderMsg header;
         public string[] joint_names;
-        public Geometry.Vector3Msg[] eulers;
+        public float[] joint_angles;
 
         public OvisJointsMsg()
         {
             this.header = new HeaderMsg();
             this.joint_names = new string[0];
-            this.eulers = new Geometry.Vector3Msg[0];
+            this.joint_angles = new float[0];
         }
 
-        public OvisJointsMsg(HeaderMsg header, string[] joint_names, Geometry.Vector3Msg[] eulers)
+        public OvisJointsMsg(HeaderMsg header, string[] joint_names, float[] joint_angles)
         {
             this.header = header;
             this.joint_names = joint_names;
-            this.eulers = eulers;
+            this.joint_angles = joint_angles;
         }
 
         public static OvisJointsMsg Deserialize(MessageDeserializer deserializer) => new OvisJointsMsg(deserializer);
@@ -38,7 +38,7 @@ namespace RosMessageTypes.Ovis
         {
             this.header = HeaderMsg.Deserialize(deserializer);
             deserializer.Read(out this.joint_names, deserializer.ReadLength());
-            deserializer.Read(out this.eulers, Geometry.Vector3Msg.Deserialize, deserializer.ReadLength());
+            deserializer.Read(out this.joint_angles, sizeof(float), deserializer.ReadLength());
         }
 
         public override void SerializeTo(MessageSerializer serializer)
@@ -46,8 +46,8 @@ namespace RosMessageTypes.Ovis
             serializer.Write(this.header);
             serializer.WriteLength(this.joint_names);
             serializer.Write(this.joint_names);
-            serializer.WriteLength(this.eulers);
-            serializer.Write(this.eulers);
+            serializer.WriteLength(this.joint_angles);
+            serializer.Write(this.joint_angles);
         }
 
         public override string ToString()
@@ -55,7 +55,7 @@ namespace RosMessageTypes.Ovis
             return "OvisJointsMsg: " +
             "\nheader: " + header.ToString() +
             "\njoint_names: " + System.String.Join(", ", joint_names.ToList()) +
-            "\neulers: " + System.String.Join(", ", eulers.ToList());
+            "\njoint_angles: " + System.String.Join(", ", joint_angles.ToList());
         }
 
 #if UNITY_EDITOR
