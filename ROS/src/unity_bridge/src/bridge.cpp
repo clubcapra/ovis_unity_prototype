@@ -9,14 +9,30 @@ void targetCallback(const geometry_msgs::Pose::ConstPtr& msg)
   ROS_INFO("I heard: [%e, %e, %e]", msg->position.x, msg->position.y, msg->position.z);
 }
 
+void simCallback(const ovis_msgs::OvisJoints::ConstPtr& msg)
+{
+  ROS_INFO("I heard: [%e, %e, %e, %e, %e, %e, %e]", 
+    msg->joint_agnles[0], 
+    msg->joint_agnles[1], 
+    msg->joint_agnles[2],
+    msg->joint_agnles[3],
+    msg->joint_agnles[4],
+    msg->joint_agnles[5],
+    msg->joint_agnles[6]);
+}
+
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "unity_bridge");
 
   ros::NodeHandle n;
 
+  //Need this when controlling the arm from Unity
+  n.subscribe<ovis_msgs::OvisJoints>("sim_joints", 1000, simCallback);
+
+  //Need this when using the IK on the robot arm
+  n.subscribe<geometry_msgs::Pose>("ovis_target", 1000, targetCallback);
   ros::Publisher joints_pub = n.advertise<ovis_msgs::OvisJoints>("ovis_joints", 1000);
-  ros::Subscriber sub = n.subscribe<geometry_msgs::Pose>("ovis_target", 1000, targetCallback);
 
   ros::Rate loop_rate(10);
 
@@ -29,27 +45,19 @@ int main(int argc, char **argv)
     msg.header.frame_id = "ovis";
 
     std::vector<std::string> joint_names;
-    std::vector<geometry_msgs::Vector3> eulers;
+    std::vector<float> joint_agnles;
 
     for (size_t i = 0; i < JOINTS_COUNT; i++)
     {
       joint_names.push_back("name" + std::to_string(i));
-
-      geometry_msgs::Vector3 euler;
-      euler.x = 0;
-      euler.y = 0;
-      euler.z = 0;
-      eulers.push_back(euler);
+      joint_agnles.push_back(0);
     }
 
-    geometry_msgs::Vector3 testEuler;
-    testEuler.x = 0;
-    testEuler.y = 0;
-    testEuler.z = count;
-    eulers[0] = testEuler;
+    //For test purpose only
+    joint_agnles[0] = count;
 
     msg.joint_names = joint_names;
-    msg.eulers = eulers;
+    msg.joint_agnles = joint_agnles;
 
     joints_pub.publish(msg);
 
