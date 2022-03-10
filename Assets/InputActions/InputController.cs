@@ -53,6 +53,7 @@ public class InputController : MonoBehaviour
 
         movement = inputMaster.Ovis.Movement;
         movement.Enable();
+
         /*moveCamera = inputMaster.Camera.MoveCamera;
         moveCamera.Enable();
         turnCamera = inputMaster.Camera.TurnCamera;

@@ -88,7 +88,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 {
                     ""name"": ""up"",
                     ""id"": ""7ef25f53-f1f2-4fbf-b2eb-bb709c32258e"",
-                    ""path"": ""<Gamepad>/dpad"",
+                    ""path"": ""<XInputController>/dpad/up"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Xbox Control Scheme"",
@@ -99,7 +99,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 {
                     ""name"": ""down"",
                     ""id"": ""7ea020f3-38b2-43bc-a2fd-e24326f21bba"",
-                    ""path"": ""<Gamepad>/dpad"",
+                    ""path"": ""<XInputController>/dpad/down"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Xbox Control Scheme"",
@@ -110,7 +110,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 {
                     ""name"": ""left"",
                     ""id"": ""058cfeeb-f8a7-4b2a-acc7-f4c0a9abeb4a"",
-                    ""path"": ""<Gamepad>/dpad"",
+                    ""path"": ""<XInputController>/dpad/left"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Xbox Control Scheme"",
@@ -121,7 +121,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 {
                     ""name"": ""right"",
                     ""id"": ""21fcd863-2ae1-4ceb-8e11-8610fbef8272"",
-                    ""path"": ""<Gamepad>/dpad"",
+                    ""path"": ""<XInputController>/dpad/right"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Xbox Control Scheme"",
