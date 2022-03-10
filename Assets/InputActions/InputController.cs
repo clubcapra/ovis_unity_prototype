@@ -8,9 +8,8 @@ using UnityEngine.InputSystem;
 
 public class InputController : MonoBehaviour
 {
+    public readonly int jointCount = 20;
     private InputMaster inputMaster;
-    private InputAction nextJoint;
-    private InputAction previousJoint;
     private InputAction movement;
     private InputAction moveCamera;
     private InputAction turnCamera;
@@ -91,19 +90,33 @@ public class InputController : MonoBehaviour
         SetSelectedJointIndex(selectedIndex); // to make sure it is in the valid range
         UpdateDirection(selectedIndex);
     }
+
     private void CycleNextJoint(InputAction.CallbackContext obj)
     {
-        SetSelectedJointIndex(selectedIndex + 1);
+        selectedIndex++;
+        while (!Enum.IsDefined(typeof(moveableJoints), selectedIndex))
+        {
+            if (selectedIndex >= jointCount)
+                selectedIndex = 1;
+            else
+                selectedIndex++;
+        }
+        SetSelectedJointIndex(selectedIndex);
         Highlight(selectedIndex);
-        Debug.Log("selected joint : " + selectedJoint);
-    }
-    private void CyclePreviousJoint(InputAction.CallbackContext obj)
-    {
-        SetSelectedJointIndex(selectedIndex - 1);
-        Highlight(selectedIndex);
-        Debug.Log("selected joint : " + selectedJoint);
     }
 
+    private void CyclePreviousJoint(InputAction.CallbackContext obj)
+    {
+        selectedIndex--;
+        while (!Enum.IsDefined(typeof(moveableJoints), selectedIndex))
+        {
+            if (selectedIndex < 0)
+                selectedIndex = 30;
+            selectedIndex--;
+        }
+        SetSelectedJointIndex(selectedIndex);
+        Highlight(selectedIndex);
+    }
 
     void SetSelectedJointIndex(int index)
     {
@@ -160,10 +173,7 @@ public class InputController : MonoBehaviour
             return;
         }
 
-        //float moveDirection = Input.GetAxis("Vertical");
         Vector2 moveDirection2 = movement.ReadValue<Vector2>();
-        Debug.Log("joystick value : " + moveDirection2);
-        //float moveDirection = 0;
         JointControl current = articulationChain[jointIndex].GetComponent<JointControl>();
         if (previousIndex != jointIndex)
         {
@@ -417,5 +427,19 @@ public class InputController : MonoBehaviour
         centeredStyle.alignment = TextAnchor.UpperCenter;
         GUI.Label(new Rect(Screen.width / 2 - 200, 10, 400, 20), "Press left/right arrow keys to select a robot joint.", centeredStyle);
         GUI.Label(new Rect(Screen.width / 2 - 200, 30, 400, 20), "Press up/down arrow keys to move " + selectedJoint + ".", centeredStyle);
+    }
+
+    private enum moveableJoints 
+    { 
+        shoulder = 2, 
+        Arm = 3, 
+        elbow = 4, 
+        foreArme = 5, 
+        backWrits = 6, 
+        frontWrist = 7, 
+        leftPhalanx = 13, 
+        rightPhalanx = 18, 
+        leftFinger = 15,
+        rightFinger = 20 
     }
 }
