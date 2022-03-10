@@ -52,22 +52,17 @@ public class InputController : MonoBehaviour
         inputMaster.Ovis.PreviousJoint.performed += CyclePreviousJoint;
         inputMaster.Ovis.PreviousJoint.Enable();
 
-        /*previousJoint = inputMaster.Ovis.PreviousJoint;
-        previousJoint.Enable();
         movement = inputMaster.Ovis.Movement;
         movement.Enable();
-        moveCamera = inputMaster.Camera.MoveCamera;
+        /*moveCamera = inputMaster.Camera.MoveCamera;
         moveCamera.Enable();
         turnCamera = inputMaster.Camera.TurnCamera;
         turnCamera.Enable();*/
     }
 
-
-
-
     private void OnDisable()
     {
-        inputMaster.Ovis.NextJoint.Disable();
+        //inputMaster.Ovis.NextJoint.Disable();
     }
 
     // Start is called before the first frame update
@@ -93,48 +88,20 @@ public class InputController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        /*var gamepad = Gamepad.current;
-        if (gamepad == null)
-            return; // No gamepad connected.*/
-
-        //bool SelectionInput1 = gamepad.rightShoulder.IsPressed();
-        //bool SelectionInput2 = gamepad.leftShoulder.IsPressed();
-  
-
-
-        //Vector2 move = gamepad.leftStick.ReadValue();
-        // 'Move' code here
-
-        ///////////////////////
-        //bool SelectionInput1 = Input.GetKeyDown("right");
-        //bool SelectionInput2 = Input.GetKeyDown("left");
-
         SetSelectedJointIndex(selectedIndex); // to make sure it is in the valid range
-        //UpdateDirection(selectedIndex);
-
-        /*if (SelectionInput2)
-        {
-            SetSelectedJointIndex(selectedIndex - 1);
-            Highlight(selectedIndex);
-        }
-        else if (SelectionInput1)
-        {
-            SetSelectedJointIndex(selectedIndex + 1);
-            Highlight(selectedIndex);
-        }*/
-
         UpdateDirection(selectedIndex);
     }
     private void CycleNextJoint(InputAction.CallbackContext obj)
     {
-        SetSelectedJointIndex(selectedIndex - 1);
+        SetSelectedJointIndex(selectedIndex + 1);
         Highlight(selectedIndex);
+        Debug.Log("selected joint : " + selectedJoint);
     }
     private void CyclePreviousJoint(InputAction.CallbackContext obj)
     {
-        SetSelectedJointIndex(selectedIndex + 1);
+        SetSelectedJointIndex(selectedIndex - 1);
         Highlight(selectedIndex);
+        Debug.Log("selected joint : " + selectedJoint);
     }
 
 
@@ -194,8 +161,9 @@ public class InputController : MonoBehaviour
         }
 
         //float moveDirection = Input.GetAxis("Vertical");
-        //float moveDirection = gamepad.leftStick.up.ReadValue();
-        float moveDirection = 0;
+        Vector2 moveDirection2 = movement.ReadValue<Vector2>();
+        Debug.Log("joystick value : " + moveDirection2);
+        //float moveDirection = 0;
         JointControl current = articulationChain[jointIndex].GetComponent<JointControl>();
         if (previousIndex != jointIndex)
         {
@@ -209,18 +177,149 @@ public class InputController : MonoBehaviour
             UpdateControlType(current);
         }
 
-        if (moveDirection > 0)
+        // The moveable joint have the following indexes :
+        // 2, 3, 4, 5, 6, 7, (13 + 18), (15 + 20)
+        // 13 + 18 & 15 + 20 are the fingers of the hand and should together 
+        switch (selectedIndex) 
         {
-            current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
-        }
-        else if (moveDirection < 0)
-        {
-            current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
-        }
-        else
-        {
-            current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
-        }
+            case 2:
+                if (moveDirection2.x > 0)
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+
+                else if (moveDirection2.x < 0)
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                else
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
+                break;
+            case 3:
+                if (moveDirection2.y > 0)
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                else if (moveDirection2.y < 0)
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                else
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
+                break;
+            case 4:
+                if (moveDirection2.y > 0)
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                else if (moveDirection2.y < 0)
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                else
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
+                break;
+            // Elbow wrist?
+            case 5:
+                if (moveDirection2.x > 0)
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                else if (moveDirection2.x < 0)
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                else
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
+                break;
+            case 6:
+                if (moveDirection2.y > 0)
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                else if (moveDirection2.y < 0)
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                else
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
+                break;
+            // Wrist
+            case 7:
+                if (moveDirection2.x > 0)
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                else if (moveDirection2.x < 0)
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                else
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
+                break;
+            // 13 + 18 = Phalanx
+            case 13:
+                JointControl joint18 = articulationChain[18].GetComponent<JointControl>();
+                if (moveDirection2.x > 0)
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                    joint18.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                }
+                    
+                else if (moveDirection2.x < 0)
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                    joint18.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                }
+                   
+                else
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
+                    joint18.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
+                }  
+                break;
+            case 18:
+                JointControl joint13 = articulationChain[13].GetComponent<JointControl>();
+                if (moveDirection2.x > 0)
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                    joint13.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                }
+                   
+                else if (moveDirection2.x < 0)
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                    joint13.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                }
+                    
+                else
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
+                    joint13.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
+                }
+                break;
+            // 15 + 20 = Finger tip
+            case 15:
+                JointControl joint20 = articulationChain[20].GetComponent<JointControl>();
+                if (moveDirection2.x > 0)
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                    joint20.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                }
+
+                else if (moveDirection2.x < 0)
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                    joint20.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                }
+
+                else
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
+                    joint20.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
+                }
+                break;
+            case 20:
+                JointControl joint15 = articulationChain[15].GetComponent<JointControl>();
+                if (moveDirection2.x > 0)
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                    joint15.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                }
+                    
+                else if (moveDirection2.x < 0)
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                    joint15.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                }
+                    
+                else
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
+                    joint15.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
+                }   
+                break;
+
+            default:
+                current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
+                break;
+        };
     }
 
     /// <summary>
