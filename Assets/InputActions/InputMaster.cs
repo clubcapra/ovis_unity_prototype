@@ -41,6 +41,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Joystick Movement"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""e743f3cd-c1ef-450e-9a10-cf29fcb06d38"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -51,6 +59,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Xbox Control Scheme"",
+                    ""action"": ""Next Joint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""774b3ee0-b99f-446e-a8b8-c111c255e07e"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
                     ""action"": ""Next Joint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -166,7 +185,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""2D Vector"",
+                    ""name"": ""Joystick"",
                     ""id"": ""99f791cf-8714-4f10-9c70-1d2c9ea3a6f9"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
@@ -230,6 +249,72 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""action"": ""Previous Joint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""210c9308-6032-4ff9-a149-f0be6703c4f5"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Previous Joint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Joystick"",
+                    ""id"": ""8171aa23-d4aa-4975-b34f-b659116a4152"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Joystick Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""b7ac6fe2-d37a-4d8c-9ade-91518af69ce2"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Control Scheme"",
+                    ""action"": ""Joystick Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""a0cac061-8d77-4b86-8b5e-870f34de2e64"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Control Scheme"",
+                    ""action"": ""Joystick Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""d0a388e6-3bbc-4a6c-90d0-c80c9521b410"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Control Scheme"",
+                    ""action"": ""Joystick Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""8ae41e6a-d9f5-4146-8c11-fa4698025d91"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox Control Scheme"",
+                    ""action"": ""Joystick Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -387,6 +472,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Ovis_NextJoint = m_Ovis.FindAction("Next Joint", throwIfNotFound: true);
         m_Ovis_Movement = m_Ovis.FindAction("Movement", throwIfNotFound: true);
         m_Ovis_PreviousJoint = m_Ovis.FindAction("Previous Joint", throwIfNotFound: true);
+        m_Ovis_JoystickMovement = m_Ovis.FindAction("Joystick Movement", throwIfNotFound: true);
         // Camera
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
         m_Camera_MoveCamera = m_Camera.FindAction("Move Camera", throwIfNotFound: true);
@@ -443,6 +529,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Ovis_NextJoint;
     private readonly InputAction m_Ovis_Movement;
     private readonly InputAction m_Ovis_PreviousJoint;
+    private readonly InputAction m_Ovis_JoystickMovement;
     public struct OvisActions
     {
         private @InputMaster m_Wrapper;
@@ -450,6 +537,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @NextJoint => m_Wrapper.m_Ovis_NextJoint;
         public InputAction @Movement => m_Wrapper.m_Ovis_Movement;
         public InputAction @PreviousJoint => m_Wrapper.m_Ovis_PreviousJoint;
+        public InputAction @JoystickMovement => m_Wrapper.m_Ovis_JoystickMovement;
         public InputActionMap Get() { return m_Wrapper.m_Ovis; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -468,6 +556,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @PreviousJoint.started -= m_Wrapper.m_OvisActionsCallbackInterface.OnPreviousJoint;
                 @PreviousJoint.performed -= m_Wrapper.m_OvisActionsCallbackInterface.OnPreviousJoint;
                 @PreviousJoint.canceled -= m_Wrapper.m_OvisActionsCallbackInterface.OnPreviousJoint;
+                @JoystickMovement.started -= m_Wrapper.m_OvisActionsCallbackInterface.OnJoystickMovement;
+                @JoystickMovement.performed -= m_Wrapper.m_OvisActionsCallbackInterface.OnJoystickMovement;
+                @JoystickMovement.canceled -= m_Wrapper.m_OvisActionsCallbackInterface.OnJoystickMovement;
             }
             m_Wrapper.m_OvisActionsCallbackInterface = instance;
             if (instance != null)
@@ -481,6 +572,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @PreviousJoint.started += instance.OnPreviousJoint;
                 @PreviousJoint.performed += instance.OnPreviousJoint;
                 @PreviousJoint.canceled += instance.OnPreviousJoint;
+                @JoystickMovement.started += instance.OnJoystickMovement;
+                @JoystickMovement.performed += instance.OnJoystickMovement;
+                @JoystickMovement.canceled += instance.OnJoystickMovement;
             }
         }
     }
@@ -540,6 +634,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnNextJoint(InputAction.CallbackContext context);
         void OnMovement(InputAction.CallbackContext context);
         void OnPreviousJoint(InputAction.CallbackContext context);
+        void OnJoystickMovement(InputAction.CallbackContext context);
     }
     public interface ICameraActions
     {
