@@ -191,6 +191,7 @@ public class InputController : MonoBehaviour
                 else
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
                 break;
+
             case 3:
                 if (moveDirection2.y > 0)
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
@@ -199,6 +200,7 @@ public class InputController : MonoBehaviour
                 else
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
                 break;
+
             case 4:
                 if (moveDirection2.y > 0)
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
@@ -207,6 +209,7 @@ public class InputController : MonoBehaviour
                 else
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
                 break;
+
             // Elbow wrist?
             case 5:
                 if (moveDirection2.x > 0)
@@ -216,6 +219,7 @@ public class InputController : MonoBehaviour
                 else
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
                 break;
+
             case 6:
                 if (moveDirection2.y > 0)
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
@@ -224,6 +228,7 @@ public class InputController : MonoBehaviour
                 else
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
                 break;
+
             // Wrist
             case 7:
                 if (moveDirection2.x > 0)
@@ -233,6 +238,7 @@ public class InputController : MonoBehaviour
                 else
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
                 break;
+
             // 13 + 18 = Phalanx
             case 13:
                 JointControl joint18 = articulationChain[18].GetComponent<JointControl>();
@@ -240,40 +246,61 @@ public class InputController : MonoBehaviour
                 {
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
                     joint18.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
-                }
-                    
+                }  
                 else if (moveDirection2.x < 0)
                 {
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
                     joint18.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
                 }
-                   
+                // Opens and closes the hand
+                else if (moveDirection2.y > 0)
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                    joint18.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                }
+                else if (moveDirection2.y < 0)
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                    joint18.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                }
                 else
                 {
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
                     joint18.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
                 }  
                 break;
+
             case 18:
                 JointControl joint13 = articulationChain[13].GetComponent<JointControl>();
                 if (moveDirection2.x > 0)
                 {
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
                     joint13.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
-                }
-                   
+                } 
                 else if (moveDirection2.x < 0)
                 {
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
                     joint13.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
                 }
-                    
+                // Opens and closes the hand
+                else if (moveDirection2.y > 0)
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                    joint13.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                }
+                else if (moveDirection2.y < 0)
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                    joint13.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                }
+
                 else
                 {
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
                     joint13.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
                 }
                 break;
+
             // 15 + 20 = Finger tip
             case 15:
                 JointControl joint20 = articulationChain[20].GetComponent<JointControl>();
@@ -288,6 +315,17 @@ public class InputController : MonoBehaviour
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
                     joint20.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
                 }
+                // Opens and closes the hand
+                else if (moveDirection2.y > 0)
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                    joint20.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                }
+                else if (moveDirection2.y < 0)
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                    joint20.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                }
 
                 else
                 {
@@ -295,20 +333,31 @@ public class InputController : MonoBehaviour
                     joint20.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
                 }
                 break;
+
             case 20:
                 JointControl joint15 = articulationChain[15].GetComponent<JointControl>();
+                // Translates the hand
                 if (moveDirection2.x > 0)
                 {
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
                     joint15.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
                 }
-                    
                 else if (moveDirection2.x < 0)
                 {
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
                     joint15.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
                 }
-                    
+                // Opens and closes the hand
+                else if (moveDirection2.y > 0)
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                    joint15.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                }
+                else if (moveDirection2.y < 0)
+                {
+                    current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Negative;
+                    joint15.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
+                }
                 else
                 {
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
@@ -319,6 +368,7 @@ public class InputController : MonoBehaviour
             default:
                 current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
                 break;
+
         };
     }
 
