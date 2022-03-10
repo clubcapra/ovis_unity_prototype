@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Robotics;
@@ -5,10 +6,15 @@ using Unity.Robotics.UrdfImporter.Control;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
 public class InputController : MonoBehaviour
 {
-    private Controller c = new Controller();
+    private InputMaster inputMaster;
+    private InputAction nextJoint;
+    private InputAction previousJoint;
+    private InputAction movement;
+    private InputAction moveCamera;
+    private InputAction turnCamera;
+
     public enum RotationDirection { None = 0, Positive = 1, Negative = -1 };
 
     private ArticulationBody[] articulationChain;
@@ -34,6 +40,35 @@ public class InputController : MonoBehaviour
     [Tooltip("Color to highlight the currently selected join")]
     public Color highLightColor = new Color(1.0f, 0, 0, 1.0f);
 
+    private void Awake()
+    {
+        inputMaster = new InputMaster();
+    }
+
+    private void OnEnable()
+    {
+        inputMaster.Ovis.NextJoint.performed += CycleNextJoint;
+        inputMaster.Ovis.NextJoint.Enable();
+        inputMaster.Ovis.PreviousJoint.performed += CyclePreviousJoint;
+        inputMaster.Ovis.PreviousJoint.Enable();
+
+        /*previousJoint = inputMaster.Ovis.PreviousJoint;
+        previousJoint.Enable();
+        movement = inputMaster.Ovis.Movement;
+        movement.Enable();
+        moveCamera = inputMaster.Camera.MoveCamera;
+        moveCamera.Enable();
+        turnCamera = inputMaster.Camera.TurnCamera;
+        turnCamera.Enable();*/
+    }
+
+
+
+
+    private void OnDisable()
+    {
+        inputMaster.Ovis.NextJoint.Disable();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -59,15 +94,16 @@ public class InputController : MonoBehaviour
     void Update()
     {
 
-        var gamepad = Gamepad.current;
+        /*var gamepad = Gamepad.current;
         if (gamepad == null)
-            return; // No gamepad connected.
+            return; // No gamepad connected.*/
 
-        bool SelectionInput1 = gamepad.rightShoulder.IsPressed();
-        bool SelectionInput2 = gamepad.leftShoulder.IsPressed();
+        //bool SelectionInput1 = gamepad.rightShoulder.IsPressed();
+        //bool SelectionInput2 = gamepad.leftShoulder.IsPressed();
+  
 
 
-        Vector2 move = gamepad.leftStick.ReadValue();
+        //Vector2 move = gamepad.leftStick.ReadValue();
         // 'Move' code here
 
         ///////////////////////
@@ -75,9 +111,9 @@ public class InputController : MonoBehaviour
         //bool SelectionInput2 = Input.GetKeyDown("left");
 
         SetSelectedJointIndex(selectedIndex); // to make sure it is in the valid range
-        UpdateDirection(selectedIndex);
+        //UpdateDirection(selectedIndex);
 
-        if (SelectionInput2)
+        /*if (SelectionInput2)
         {
             SetSelectedJointIndex(selectedIndex - 1);
             Highlight(selectedIndex);
@@ -86,10 +122,21 @@ public class InputController : MonoBehaviour
         {
             SetSelectedJointIndex(selectedIndex + 1);
             Highlight(selectedIndex);
-        }
+        }*/
 
         UpdateDirection(selectedIndex);
     }
+    private void CycleNextJoint(InputAction.CallbackContext obj)
+    {
+        SetSelectedJointIndex(selectedIndex - 1);
+        Highlight(selectedIndex);
+    }
+    private void CyclePreviousJoint(InputAction.CallbackContext obj)
+    {
+        SetSelectedJointIndex(selectedIndex + 1);
+        Highlight(selectedIndex);
+    }
+
 
     void SetSelectedJointIndex(int index)
     {
