@@ -6,8 +6,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-public class test : MonoBehaviour
+public class InputController : MonoBehaviour
 {
+    private Controller c = new Controller();
     public enum RotationDirection { None = 0, Positive = 1, Negative = -1 };
 
     private ArticulationBody[] articulationChain;
