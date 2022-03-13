@@ -6,7 +6,7 @@ using Unity.Robotics.UrdfImporter.Control;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputController : MonoBehaviour
+public class InputController : Controller
 {
     public readonly int jointCount = 20;
     private InputMaster inputMaster;
@@ -16,28 +16,28 @@ public class InputController : MonoBehaviour
 
     public enum RotationDirection { None = 0, Positive = 1, Negative = -1 };
 
-    private ArticulationBody[] articulationChain;
+    private ArticulationBody[] articulationChainIC;
     // Stores original colors of the part being highlighted
-    private Color[] prevColor;
-    private int previousIndex;
+    private Color[] prevColorIC;
+    private int previousIndexIC;
 
-    [InspectorReadOnly(hideInEditMode: true)]
-    public string selectedJoint;
-    [HideInInspector]
-    public int selectedIndex;
+    //[InspectorReadOnly(hideInEditMode: true)]
+    //public string selectedJoint;
+    //[HideInInspector]
+    //public int selectedIndex;
 
-    public ControlType control = ControlType.PositionControl;
+    /*public ControlType control = ControlType.PositionControl;
     public float stiffness;
     public float damping;
     public float forceLimit;
     public float speed = 5f; // Units: degree/s
     public float torque = 100f; // Units: Nm or N
-    public float acceleration = 5f;// Units: m/s^2 / degree/s^2
+    public float acceleration = 5f;// Units: m/s^2 / degree/s^2*/
 
     private Gamepad gamepad;
 
-    [Tooltip("Color to highlight the currently selected join")]
-    public Color highLightColor = new Color(1.0f, 0, 0, 1.0f);
+    //[Tooltip("Color to highlight the currently selected join")]
+    //public Color highLightColor = new Color(1.0f, 0, 0, 1.0f);
 
     private void Awake()
     {
@@ -68,11 +68,11 @@ public class InputController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        previousIndex = selectedIndex = 1;
+        previousIndexIC = selectedIndex = 1;
         this.gameObject.AddComponent<FKRobot>();
-        articulationChain = this.GetComponentsInChildren<ArticulationBody>();
+        articulationChainIC = this.GetComponentsInChildren<ArticulationBody>();
         int defDyanmicVal = 10;
-        foreach (ArticulationBody joint in articulationChain)
+        foreach (ArticulationBody joint in articulationChainIC)
         {
             joint.gameObject.AddComponent<JointControl>();
             joint.jointFriction = defDyanmicVal;
@@ -121,9 +121,9 @@ public class InputController : MonoBehaviour
 
     void SetSelectedJointIndex(int index)
     {
-        if (articulationChain.Length > 0)
+        if (articulationChainIC.Length > 0)
         {
-            selectedIndex = (index + articulationChain.Length) % articulationChain.Length;
+            selectedIndex = (index + articulationChainIC.Length) % articulationChainIC.Length;
         }
     }
 
@@ -133,19 +133,19 @@ public class InputController : MonoBehaviour
     /// <param name="selectedIndex">Index of the link selected in the Articulation Chain</param>
     private void Highlight(int selectedIndex)
     {
-        if (selectedIndex == previousIndex || selectedIndex < 0 || selectedIndex >= articulationChain.Length)
+        if (selectedIndex == previousIndexIC || selectedIndex < 0 || selectedIndex >= articulationChainIC.Length)
         {
             return;
         }
 
         // reset colors for the previously selected joint
-        ResetJointColors(previousIndex);
+        ResetJointColors(previousIndexIC);
 
         // store colors for the current selected joint
         StoreJointColors(selectedIndex);
 
         DisplaySelectedJoint(selectedIndex);
-        Renderer[] rendererList = articulationChain[selectedIndex].transform.GetChild(0).GetComponentsInChildren<Renderer>();
+        Renderer[] rendererList = articulationChainIC[selectedIndex].transform.GetChild(0).GetComponentsInChildren<Renderer>();
 
         // set the color of the selected join meshes to the highlight color
         foreach (var mesh in rendererList)
@@ -156,11 +156,11 @@ public class InputController : MonoBehaviour
 
     void DisplaySelectedJoint(int selectedIndex)
     {
-        if (selectedIndex < 0 || selectedIndex >= articulationChain.Length)
+        if (selectedIndex < 0 || selectedIndex >= articulationChainIC.Length)
         {
             return;
         }
-        selectedJoint = articulationChain[selectedIndex].name + " (" + selectedIndex + ")";
+        selectedJoint = articulationChainIC[selectedIndex].name + " (" + selectedIndex + ")";
     }
 
     /// <summary>
@@ -169,18 +169,18 @@ public class InputController : MonoBehaviour
     /// <param name="jointIndex">Index of the link selected in the Articulation Chain</param>
     private void UpdateDirection(int jointIndex)
     {
-        if (jointIndex < 0 || jointIndex >= articulationChain.Length)
+        if (jointIndex < 0 || jointIndex >= articulationChainIC.Length)
         {
             return;
         }
 
         Vector2 moveDirection = movement.ReadValue<Vector2>();
-        JointControl current = articulationChain[jointIndex].GetComponent<JointControl>();
-        if (previousIndex != jointIndex)
+        JointControl current = articulationChainIC[jointIndex].GetComponent<JointControl>();
+        if (previousIndexIC != jointIndex)
         {
-            JointControl previous = articulationChain[previousIndex].GetComponent<JointControl>();
+            JointControl previous = articulationChainIC[previousIndexIC].GetComponent<JointControl>();
             previous.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.None;
-            previousIndex = jointIndex;
+            previousIndexIC = jointIndex;
         }
 
         if (current.controltype != control)
@@ -251,7 +251,7 @@ public class InputController : MonoBehaviour
 
             // 13 + 18 = Phalanx
             case 13:
-                JointControl joint18 = articulationChain[18].GetComponent<JointControl>();
+                JointControl joint18 = articulationChainIC[18].GetComponent<JointControl>();
                 if (moveDirection.x > 0)
                 {
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
@@ -281,7 +281,7 @@ public class InputController : MonoBehaviour
                 break;
 
             case 18:
-                JointControl joint13 = articulationChain[13].GetComponent<JointControl>();
+                JointControl joint13 = articulationChainIC[13].GetComponent<JointControl>();
                 if (moveDirection.x > 0)
                 {
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
@@ -313,7 +313,7 @@ public class InputController : MonoBehaviour
 
             // 15 + 20 = Finger tip
             case 15:
-                JointControl joint20 = articulationChain[20].GetComponent<JointControl>();
+                JointControl joint20 = articulationChainIC[20].GetComponent<JointControl>();
                 if (moveDirection.x > 0)
                 {
                     current.direction = (Unity.Robotics.UrdfImporter.Control.RotationDirection)RotationDirection.Positive;
@@ -345,7 +345,7 @@ public class InputController : MonoBehaviour
                 break;
 
             case 20:
-                JointControl joint15 = articulationChain[15].GetComponent<JointControl>();
+                JointControl joint15 = articulationChainIC[15].GetComponent<JointControl>();
                 // Translates the hand
                 if (moveDirection.x > 0)
                 {
@@ -388,11 +388,11 @@ public class InputController : MonoBehaviour
     /// <param name="index">Index of the part in the Articulation chain</param>
     private void StoreJointColors(int index)
     {
-        Renderer[] materialLists = articulationChain[index].transform.GetChild(0).GetComponentsInChildren<Renderer>();
-        prevColor = new Color[materialLists.Length];
+        Renderer[] materialLists = articulationChainIC[index].transform.GetChild(0).GetComponentsInChildren<Renderer>();
+        prevColorIC = new Color[materialLists.Length];
         for (int counter = 0; counter < materialLists.Length; counter++)
         {
-            prevColor[counter] = MaterialExtensions.GetMaterialColor(materialLists[counter]);
+            prevColorIC[counter] = MaterialExtensions.GetMaterialColor(materialLists[counter]);
         }
     }
 
@@ -402,14 +402,14 @@ public class InputController : MonoBehaviour
     /// <param name="index">Index of the part in the Articulation chain</param>
     private void ResetJointColors(int index)
     {
-        Renderer[] previousRendererList = articulationChain[index].transform.GetChild(0).GetComponentsInChildren<Renderer>();
+        Renderer[] previousRendererList = articulationChainIC[index].transform.GetChild(0).GetComponentsInChildren<Renderer>();
         for (int counter = 0; counter < previousRendererList.Length; counter++)
         {
-            MaterialExtensions.SetMaterialColor(previousRendererList[counter].material, prevColor[counter]);
+            MaterialExtensions.SetMaterialColor(previousRendererList[counter].material, prevColorIC[counter]);
         }
     }
 
-    public void UpdateControlType(JointControl joint)
+    /*public void UpdateControlType(JointControl joint)
     {
         joint.controltype = (Unity.Robotics.UrdfImporter.Control.ControlType)control;
         if (control == ControlType.PositionControl)
@@ -419,15 +419,15 @@ public class InputController : MonoBehaviour
             drive.damping = damping;
             joint.joint.xDrive = drive;
         }
-    }
+    }*/
 
-    public void OnGUI()
+    /*public void OnGUI()
     {
         GUIStyle centeredStyle = GUI.skin.GetStyle("Label");
         centeredStyle.alignment = TextAnchor.UpperCenter;
         GUI.Label(new Rect(Screen.width / 2 - 200, 10, 400, 20), "Press Q / E keys to select a robot joint.", centeredStyle);
-        GUI.Label(new Rect(Screen.width / 2 - 200, 30, 400, 20), "Press WASD arrow keys to move " + selectedJoint + ".", centeredStyle);
-    }
+        GUI.Label(new Rect(Screen.width / 2 - 200, 30, 400, 20), "Press WASD keys to move " + selectedJoint + ".", centeredStyle);
+    }*/
 
     private enum moveableJoints 
     { 
