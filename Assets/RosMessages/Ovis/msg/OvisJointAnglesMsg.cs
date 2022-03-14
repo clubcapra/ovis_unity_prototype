@@ -4,57 +4,43 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using Unity.Robotics.ROSTCPConnector.MessageGeneration;
-using RosMessageTypes.Std;
 
 namespace RosMessageTypes.Ovis
 {
     [Serializable]
-    public class OvisJointsMsg : Message
+    public class OvisJointAnglesMsg : Message
     {
-        public const string k_RosMessageName = "ovis_msgs/OvisJoints";
+        public const string k_RosMessageName = "ovis_msgs/OvisJointAngles";
         public override string RosMessageName => k_RosMessageName;
 
-        public HeaderMsg header;
-        public string[] joint_names;
         public float[] joint_angles;
 
-        public OvisJointsMsg()
+        public OvisJointAnglesMsg()
         {
-            this.header = new HeaderMsg();
-            this.joint_names = new string[0];
             this.joint_angles = new float[0];
         }
 
-        public OvisJointsMsg(HeaderMsg header, string[] joint_names, float[] joint_angles)
+        public OvisJointAnglesMsg(float[] joint_angles)
         {
-            this.header = header;
-            this.joint_names = joint_names;
             this.joint_angles = joint_angles;
         }
 
-        public static OvisJointsMsg Deserialize(MessageDeserializer deserializer) => new OvisJointsMsg(deserializer);
+        public static OvisJointAnglesMsg Deserialize(MessageDeserializer deserializer) => new OvisJointAnglesMsg(deserializer);
 
-        private OvisJointsMsg(MessageDeserializer deserializer)
+        private OvisJointAnglesMsg(MessageDeserializer deserializer)
         {
-            this.header = HeaderMsg.Deserialize(deserializer);
-            deserializer.Read(out this.joint_names, deserializer.ReadLength());
             deserializer.Read(out this.joint_angles, sizeof(float), deserializer.ReadLength());
         }
 
         public override void SerializeTo(MessageSerializer serializer)
         {
-            serializer.Write(this.header);
-            serializer.WriteLength(this.joint_names);
-            serializer.Write(this.joint_names);
             serializer.WriteLength(this.joint_angles);
             serializer.Write(this.joint_angles);
         }
 
         public override string ToString()
         {
-            return "OvisJointsMsg: " +
-            "\nheader: " + header.ToString() +
-            "\njoint_names: " + System.String.Join(", ", joint_names.ToList()) +
+            return "OvisJointAnglesMsg: " +
             "\njoint_angles: " + System.String.Join(", ", joint_angles.ToList());
         }
 
