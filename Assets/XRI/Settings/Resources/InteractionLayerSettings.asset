@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LayerNames:
   - Default
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - finger
+  - wrist
+  - pre wrist
+  - arm
+  - elbow
+  - forearm
+  - shoulder
+  - base
   - 
   - 
   - 

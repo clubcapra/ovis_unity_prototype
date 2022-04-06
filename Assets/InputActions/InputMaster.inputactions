@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Select Joint",
+                    "type": "Button",
+                    "id": "cf77431f-607a-4cf9-9eab-5686f8ffe678",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -339,6 +348,17 @@
                     "action": "Joystick Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "b8fef021-af93-479e-b7c2-cf86009a2517",
+                    "path": "<XRController>{RightHand}/triggerPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select Joint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

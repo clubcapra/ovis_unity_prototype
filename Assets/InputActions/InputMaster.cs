@@ -62,6 +62,15 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Select Joint"",
+                    ""type"": ""Button"",
+                    ""id"": ""cf77431f-607a-4cf9-9eab-5686f8ffe678"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -361,6 +370,17 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""action"": ""Joystick Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b8fef021-af93-479e-b7c2-cf86009a2517"",
+                    ""path"": ""<XRController>{RightHand}/triggerPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select Joint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1594,6 +1614,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_Ovis_Movement = m_Ovis.FindAction("Movement", throwIfNotFound: true);
         m_Ovis_PreviousJoint = m_Ovis.FindAction("Previous Joint", throwIfNotFound: true);
         m_Ovis_JoystickMovement = m_Ovis.FindAction("Joystick Movement", throwIfNotFound: true);
+        m_Ovis_SelectJoint = m_Ovis.FindAction("Select Joint", throwIfNotFound: true);
         // Camera
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
         m_Camera_MoveCamera = m_Camera.FindAction("Move Camera", throwIfNotFound: true);
@@ -1711,6 +1732,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     private readonly InputAction m_Ovis_Movement;
     private readonly InputAction m_Ovis_PreviousJoint;
     private readonly InputAction m_Ovis_JoystickMovement;
+    private readonly InputAction m_Ovis_SelectJoint;
     public struct OvisActions
     {
         private @InputMaster m_Wrapper;
@@ -1719,6 +1741,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_Ovis_Movement;
         public InputAction @PreviousJoint => m_Wrapper.m_Ovis_PreviousJoint;
         public InputAction @JoystickMovement => m_Wrapper.m_Ovis_JoystickMovement;
+        public InputAction @SelectJoint => m_Wrapper.m_Ovis_SelectJoint;
         public InputActionMap Get() { return m_Wrapper.m_Ovis; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1740,6 +1763,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @JoystickMovement.started -= m_Wrapper.m_OvisActionsCallbackInterface.OnJoystickMovement;
                 @JoystickMovement.performed -= m_Wrapper.m_OvisActionsCallbackInterface.OnJoystickMovement;
                 @JoystickMovement.canceled -= m_Wrapper.m_OvisActionsCallbackInterface.OnJoystickMovement;
+                @SelectJoint.started -= m_Wrapper.m_OvisActionsCallbackInterface.OnSelectJoint;
+                @SelectJoint.performed -= m_Wrapper.m_OvisActionsCallbackInterface.OnSelectJoint;
+                @SelectJoint.canceled -= m_Wrapper.m_OvisActionsCallbackInterface.OnSelectJoint;
             }
             m_Wrapper.m_OvisActionsCallbackInterface = instance;
             if (instance != null)
@@ -1756,6 +1782,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @JoystickMovement.started += instance.OnJoystickMovement;
                 @JoystickMovement.performed += instance.OnJoystickMovement;
                 @JoystickMovement.canceled += instance.OnJoystickMovement;
+                @SelectJoint.started += instance.OnSelectJoint;
+                @SelectJoint.performed += instance.OnSelectJoint;
+                @SelectJoint.canceled += instance.OnSelectJoint;
             }
         }
     }
@@ -2279,6 +2308,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnPreviousJoint(InputAction.CallbackContext context);
         void OnJoystickMovement(InputAction.CallbackContext context);
+        void OnSelectJoint(InputAction.CallbackContext context);
     }
     public interface ICameraActions
     {

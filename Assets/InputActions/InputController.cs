@@ -5,6 +5,7 @@ using Unity.Robotics;
 using Unity.Robotics.UrdfImporter.Control;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class InputController : Controller
 {
@@ -13,6 +14,8 @@ public class InputController : Controller
     private InputAction movement;
     private InputAction moveCamera;
     private InputAction turnCamera;
+    public XRRayInteractor rayCast;
+    public string rayCastTarget;
 
     public enum RotationDirection { None = 0, Positive = 1, Negative = -1 };
 
@@ -21,23 +24,7 @@ public class InputController : Controller
     private Color[] prevColorIC;
     private int previousIndexIC;
 
-    //[InspectorReadOnly(hideInEditMode: true)]
-    //public string selectedJoint;
-    //[HideInInspector]
-    //public int selectedIndex;
-
-    /*public ControlType control = ControlType.PositionControl;
-    public float stiffness;
-    public float damping;
-    public float forceLimit;
-    public float speed = 5f; // Units: degree/s
-    public float torque = 100f; // Units: Nm or N
-    public float acceleration = 5f;// Units: m/s^2 / degree/s^2*/
-
     private Gamepad gamepad;
-
-    //[Tooltip("Color to highlight the currently selected join")]
-    //public Color highLightColor = new Color(1.0f, 0, 0, 1.0f);
 
     private void Awake()
     {
@@ -50,7 +37,9 @@ public class InputController : Controller
         inputMaster.Ovis.NextJoint.Enable();
         inputMaster.Ovis.PreviousJoint.performed += CyclePreviousJoint;
         inputMaster.Ovis.PreviousJoint.Enable();
-
+        inputMaster.Ovis.SelectJoint.performed += SelectJoint;
+        inputMaster.Ovis.SelectJoint.Enable();
+        
         movement = inputMaster.Ovis.Movement;
         movement.Enable();
 
@@ -71,6 +60,7 @@ public class InputController : Controller
         previousIndexIC = selectedIndex = 1;
         this.gameObject.AddComponent<FKRobot>();
         articulationChainIC = this.GetComponentsInChildren<ArticulationBody>();
+        rayCast = GameObject.FindWithTag("RightHandController").GetComponent(typeof(XRRayInteractor)) as XRRayInteractor;
         int defDyanmicVal = 10;
         foreach (ArticulationBody joint in articulationChainIC)
         {
@@ -117,6 +107,63 @@ public class InputController : Controller
         }
         SetSelectedJointIndex(selectedIndex);
         Highlight(selectedIndex);
+    }
+
+    private void SelectJoint(InputAction.CallbackContext obj)
+    {
+        Debug.Log("hello there!");
+
+        //Debug.Log(" i'm pointing at : " + rayCast.firstInteractableSelected.ToString());
+        //Debug.Log(" i'm pointing at : " + rayCast.selectTarget.ToString());
+        rayCast.TryGetCurrent3DRaycastHit(out RaycastHit hit);
+        Debug.Log(" i'm pointing at : " + hit.collider.name);
+
+
+            switch (hit.collider.name)
+            {
+                case "ovis_base_0":
+                    selectedIndex = (int)moveableJoints.ovisBase;
+                    SetSelectedJointIndex(selectedIndex);
+                    Highlight(selectedIndex);
+                    break;
+                case "ovis_shoulder_0":
+                    selectedIndex = (int) moveableJoints.shoulder;
+                    SetSelectedJointIndex(selectedIndex);
+                    Highlight(selectedIndex);
+                    break;
+                case "ovis_upper_arm_0":
+                    selectedIndex = (int)moveableJoints.upperArm;
+                    SetSelectedJointIndex(selectedIndex);
+                    Highlight(selectedIndex);
+                    break;
+                case "ovis_elbow_0":
+                    selectedIndex = (int)moveableJoints.elbow;
+                    SetSelectedJointIndex(selectedIndex);
+                    Highlight(selectedIndex);
+                    break;
+                case "ovis_forearm_0":
+                    selectedIndex = (int)moveableJoints.foreArm;
+                    SetSelectedJointIndex(selectedIndex);
+                    Highlight(selectedIndex);
+                    break;
+                case "ovis_wrist_0":
+                    selectedIndex = (int)moveableJoints.wrist;
+                    SetSelectedJointIndex(selectedIndex);
+                    Highlight(selectedIndex);
+                    break;
+                case "ovis_flange_0":
+                    selectedIndex = (int)moveableJoints.flange;
+                    SetSelectedJointIndex(selectedIndex);
+                    Highlight(selectedIndex);
+                    break;
+            default:
+                    break;
+            }
+
+
+        //Debug.Log("deprecated : " + rayCast.selectTarget);
+        //Debug.Log("deprecated to string : " + rayCast.selectTarget.ToString());
+        //Debug.Log("my parent name is : " + rayCast.firstInteractableSelected.transform.parent.name);
     }
 
     void SetSelectedJointIndex(int index)
@@ -431,12 +478,13 @@ public class InputController : Controller
 
     private enum moveableJoints 
     { 
+        ovisBase = 1,
         shoulder = 2, 
-        Arm = 3, 
+        upperArm = 3, 
         elbow = 4, 
-        foreArme = 5, 
-        backWrits = 6, 
-        frontWrist = 7, 
+        foreArm = 5, 
+        wrist = 6, 
+        flange = 7, 
         leftPhalanx = 13, 
         rightPhalanx = 18, 
         leftFinger = 15,
