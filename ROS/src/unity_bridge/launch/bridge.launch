@@ -7,5 +7,5 @@
       <param name="tcp_port" type="int" value="$(arg tcp_port)"/>
   </node>
 
-  <node name="talker" pkg="unity_bridge" type="unity_bridge" output="screen" />
+  <node name="bridge" pkg="unity_bridge" type="unity_bridge" output="screen" />
 </launch>

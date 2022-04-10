@@ -4,49 +4,89 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Robotics.ROSTCPConnector;
-using Unity.Robotics.ROSTCPConnector.ROSGeometry;
+using Unity.Robotics.ROSTCPConnector.MessageGeneration;
 using UnityEngine;
 
 public class OvisController : MonoBehaviour
 {
-    public string topicJoints = "/ovis_joints";
-    public string topicTarget = "/ovis_target";
+    //https://docs.google.com/document/d/1EtxCm3eE4_atR6cnkAefFj6paXdG1T3sMXU4caz4XTg/edit
 
-    public Transform target;
-    public Transform[] joints;
+    public enum ControlMode { JointByJoint, Target }
 
-    private ROSConnection ROSConn;
+    public ControlMode controlMode = ControlMode.JointByJoint;
 
-    // Start is called before the first frame update
-    void Start()
+    public string topicJointAngles = "ovis/joint_angles";
+    public string serviceHomePos = "ovis/home_joint_positions";
+
+    public JointController[] joints;
+
+    private ROSConnection rosConn;
+
+    private JointGoalController jointGoalController;
+
+    void Awake()
     {
-        ROSConn = GetComponent<ROSConnection>();
-        ROSConn.Subscribe<OvisJointsMsg>(topicJoints, ReceiveJointsCallback);
-        ROSConn.RegisterPublisher<PoseMsg>(topicTarget, 1000);
-        StartCoroutine(SendTarget());
+        rosConn = GetComponent<ROSConnection>();
+
+        jointGoalController = GetComponent<JointGoalController>();
+        jointGoalController.enabled = false;
     }
 
-    private void ReceiveJointsCallback(OvisJointsMsg msg)
+    private void OnEnable()
     {
-        Vector3 euler = joints[0].localEulerAngles;
-        euler.z = (float)msg.eulers[0].z;
-        joints[0].localEulerAngles = euler;
-        //Debug.Log(msg.eulers[0].z);
+        rosConn.Connect();
+
+        rosConn.RegisterRosService<HomeJointRequest, HomeJointResponse>(serviceHomePos);
+
+        rosConn.SendServiceMessage<HomeJointResponse>(serviceHomePos, new HomeJointRequest(), OnHomePositionsReceived);
     }
 
-    IEnumerator SendTarget()
+    private void OnHomePositionsReceived(HomeJointResponse res)
     {
-        while (true)
+        Debug.Log("OnHomePositionsReceived");
+
+        if (res.home_joint_positions.Length != joints.Length)
         {
-            var pose = new PoseMsg
-            {
-                position = target.position.To<FLU>(),
-                orientation = target.localRotation.To<FLU>()
-            };      
-
-            ROSConn.Publish(topicTarget, pose);
-
-            yield return new WaitForSeconds(1f);
+            Debug.LogError($"OnHomePositions has {res.home_joint_positions.Length} joints but only {joints.Length} in the Editor");
+            return;
         }
+
+        for (int i = 0; i < joints.Length; i++)
+        {
+            joints[i].SetHomePositionOffset(res.home_joint_positions[i]);
+        }
+
+        rosConn.Subscribe<OvisJointAnglesMsg>(topicJointAngles, OnJointAnglesReceived);
+
+        jointGoalController.Prepare(rosConn, res);
+
+        OnValidate();
+    }
+
+    private void OnJointAnglesReceived(OvisJointAnglesMsg msg)
+    {
+        if (msg.joint_angles.Length != joints.Length)
+        {
+            Debug.LogError($"OvisJointAnglesMsg has {msg.joint_angles.Length} joints but only {joints.Length} in the Editor");
+            return;
+        }
+
+        for (int i = 0; i < joints.Length; i++)
+        {
+            joints[i].SetAngularPosition(msg.joint_angles[i]);
+        }
+    }
+
+    private void OnValidate()
+    {
+        if(jointGoalController != null)
+            jointGoalController.enabled = controlMode == ControlMode.JointByJoint;
+    }
+
+    private void OnDisable()
+    {
+        jointGoalController.enabled = false;
+
+        rosConn.Disconnect();
     }
 }
