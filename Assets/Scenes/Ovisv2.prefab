@@ -1849,12 +1849,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2692870950162665006}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 52963724f1c4b9c4eb1aec59f9c5a595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   controlMode: 0
+  rosNameSpace: /markhor/
   topicJointAngles: ovis/joint_angles
   topicJointGoal: ovis/joint_goal
   serviceHomePos: ovis/home_joint_positions
@@ -1866,6 +1867,7 @@ MonoBehaviour:
   - {fileID: 505514206997118587}
   - {fileID: 8724391706154671306}
   rosConn: {fileID: 2692870950162665007}
+  updateTime: 0.5
 --- !u!114 &2692870950162665007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1878,7 +1880,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7acef0b79454c9b4dae3f8139bc4ba77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RosIPAddress: 192.168.1.21
+  m_RosIPAddress: 192.168.0.107
   m_RosPort: 10000
   m_ConnectOnStart: 1
   m_KeepaliveTime: 1
@@ -1902,8 +1904,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ovisController: {fileID: 2692870951839206163}
   rayCast: {fileID: 0}
-  jointIndex: 0
-  speed: 500
+  jointIndex: 2
+  deplacement: 5
   selectedMaterial: {fileID: 2100000, guid: 4c39009913b977e468ac135844cb8f67, type: 2}
 --- !u!1 &2692870950163528060
 GameObject:

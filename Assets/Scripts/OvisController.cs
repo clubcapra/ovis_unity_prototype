@@ -20,15 +20,21 @@ public class OvisController : MonoBehaviour
 
     public string serviceHomePos = "ovis/home_joint_positions";
 
-    public Action OnHomeReceived;
+    public Action<HomeJointResponse> OnHomeReceived;
 
     public JointController[] joints;
     public ROSConnection rosConn;
+
+    public float updateTime = 0.5f;
+
+    private float lastUpdate = 0;
 
     void Awake()
     {
         if(rosConn == null)
             rosConn = GetComponent<ROSConnection>();
+
+        lastUpdate = Time.realtimeSinceStartup;
     }
 
     private void OnEnable()
@@ -44,13 +50,15 @@ public class OvisController : MonoBehaviour
 
         rosConn.SendServiceMessage<HomeJointResponse>(serviceHomePos, new HomeJointRequest(), OnHomePositionsReceived);
 
-        rosConn.RegisterPublisher<OvisJointGoalMsg>(topicJointGoal, 100);
-
+        rosConn.RegisterPublisher<OvisJointGoalMsg>(topicJointGoal, 1);
     }
 
     public void SendJointGoal(OvisJointGoalMsg jointGoal)
     {
+        Debug.Log($"SendJointGoal {jointGoal.joint_index}, {jointGoal.joint_angle}");
+
         rosConn.Publish(topicJointGoal, jointGoal);
+        lastUpdate = Time.realtimeSinceStartup;
     }
 
     private void OnHomePositionsReceived(HomeJointResponse res)
@@ -68,9 +76,14 @@ public class OvisController : MonoBehaviour
             joints[i].SetHomePositionOffset(res.home_joint_positions[i]);
         }
 
+        for (int i = 0; i < joints.Length; i++)
+        {
+            joints[i].SetAngularPosition(res.current_joint_positions[i]);
+        }
+
         rosConn.Subscribe<OvisJointAnglesMsg>(topicJointAngles, OnJointAnglesReceived);
 
-        OnHomeReceived?.Invoke();
+        OnHomeReceived?.Invoke(res);
     }
 
     private void OnJointAnglesReceived(OvisJointAnglesMsg msg)

@@ -14,15 +14,18 @@ namespace RosMessageTypes.Ovis
         public override string RosMessageName => k_RosMessageName;
 
         public float[] home_joint_positions;
+        public float[] current_joint_positions;
 
         public HomeJointResponse()
         {
             this.home_joint_positions = new float[0];
+            this.current_joint_positions = new float[0];
         }
 
-        public HomeJointResponse(float[] home_joint_positions)
+        public HomeJointResponse(float[] home_joint_positions, float[] current_joint_positions)
         {
             this.home_joint_positions = home_joint_positions;
+            this.current_joint_positions = current_joint_positions;
         }
 
         public static HomeJointResponse Deserialize(MessageDeserializer deserializer) => new HomeJointResponse(deserializer);
@@ -30,18 +33,22 @@ namespace RosMessageTypes.Ovis
         private HomeJointResponse(MessageDeserializer deserializer)
         {
             deserializer.Read(out this.home_joint_positions, sizeof(float), deserializer.ReadLength());
+            deserializer.Read(out this.current_joint_positions, sizeof(float), deserializer.ReadLength());
         }
 
         public override void SerializeTo(MessageSerializer serializer)
         {
             serializer.WriteLength(this.home_joint_positions);
             serializer.Write(this.home_joint_positions);
+            serializer.WriteLength(this.current_joint_positions);
+            serializer.Write(this.current_joint_positions);
         }
 
         public override string ToString()
         {
             return "HomeJointResponse: " +
-            "\nhome_joint_positions: " + System.String.Join(", ", home_joint_positions.ToList());
+            "\nhome_joint_positions: " + System.String.Join(", ", home_joint_positions.ToList()) +
+            "\ncurrent_joint_positions: " + System.String.Join(", ", current_joint_positions.ToList());
         }
 
 #if UNITY_EDITOR

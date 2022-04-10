@@ -263,6 +263,17 @@
                 },
                 {
                     "name": "",
+                    "id": "6d41cd21-df5a-45e4-a043-71bb248a2aed",
+                    "path": "<XRController>{RightHand}/joystick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "aaa55879-d7dd-4ab6-88c6-851c1deb9f60",
                     "path": "<Gamepad>/leftShoulder",
                     "interactions": "",

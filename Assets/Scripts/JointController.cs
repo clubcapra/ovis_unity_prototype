@@ -10,43 +10,26 @@ public class JointController : MonoBehaviour
     public Vector3 homeEulersOffset;
     public MeshRenderer visual;
 
-    public float GetAngularPosition()
-    {
-        switch (axis)
-        {
-            case JointAxis.X: 
-                return transform.localEulerAngles.x - homeEulersOffset.x;
-            case JointAxis.Y: 
-                return transform.localEulerAngles.y - homeEulersOffset.y;
-            case JointAxis.Z: 
-                return transform.localEulerAngles.z - homeEulersOffset.z;
-        }
-
-        return 0;
-    }
-    public void SetAngularPosition(float angular)
+    public float GetOffsetedAngle(float angular)
     {
         Vector3 eulerAngles = homeEulersOffset;
 
         switch (axis)
         {
             case JointAxis.X:
-                eulerAngles.x += angular;
-                break;
+                return eulerAngles.x + angular;
             case JointAxis.Y:
-                eulerAngles.y += angular;
-                break;
+                return eulerAngles.y + angular;
             case JointAxis.Z:
-                eulerAngles.z += angular;
-                break;
+                return eulerAngles.z + angular;
         }
 
-        transform.localEulerAngles = eulerAngles;
+        Debug.LogError("INVALIDE");
+        return 0;
     }
-
-    public void MoveAngularPosition(float angular)
+    public void SetAngularPosition(float angular)
     {
-        Vector3 eulerAngles = transform.localEulerAngles;
+        Vector3 eulerAngles = homeEulersOffset;
 
         switch (axis)
         {

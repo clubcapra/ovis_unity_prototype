@@ -14,24 +14,38 @@ using RosMessageTypes.Ovis;
 public class InputCommunication : MonoBehaviour
 {
 
-    private InputMaster inputMaster;
     public OvisController ovisController;
-    private InputAction movementInput;
     public XRRayInteractor rayCast;
 
     public int jointIndex = 0;
-    public float speed = 500;
+    public float deplacement = 5;
+
+    public float updateTime = 0.5f;
+
+    private float lastUpdate = 0;
 
     public Material selectedMaterial;
 
     private Material lastMaterial;
 
     private float[] angles;
+    private InputAction movementInput;
+    private InputMaster inputMaster;
 
     // Start is called before the first frame update
     void Start()
     {
         angles = new float[ovisController.joints.Length];
+
+        ovisController.OnHomeReceived += (HomeJointResponse res) =>
+        {
+            for (int i = 0; i < res.current_joint_positions.Length; i++)
+            {
+                angles[i] = res.current_joint_positions[i];
+            }
+
+            Debug.Log("OnHomeReceived set to current joints position");
+        };
 
         rayCast = GameObject.FindWithTag("RightHandController")?.GetComponent<XRRayInteractor>();
     }
@@ -58,28 +72,32 @@ public class InputCommunication : MonoBehaviour
 
     void Update()
     {
-        Vector2 moveDirection = movementInput.ReadValue<Vector2>();
+        float movement = movementInput.ReadValue<Vector2>().y;
 
         if (!ovisController.enabled)
         {
-            angles[jointIndex] += speed * moveDirection.y * Time.deltaTime;
+            angles[jointIndex] += deplacement * movement * Time.deltaTime;
 
             ovisController.joints[jointIndex].SetAngularPosition(angles[jointIndex]);
         }
-        else
+        else if (Mathf.Abs(movement) > 0.5f)
         {
-            float movement = speed * moveDirection.y * Time.deltaTime;
-
-            var msg = new OvisJointGoalMsg
+            if (Time.realtimeSinceStartup - lastUpdate > updateTime)
             {
-                joint_index = (byte)jointIndex,
-                joint_angle = ovisController.joints[jointIndex].GetAngularPosition() + movement
-            };
+                angles[jointIndex] += deplacement * Mathf.Sign(movement);
 
-            Debug.Log($"{msg.joint_index}, {msg.joint_angle}");
+                var msg = new OvisJointGoalMsg
+                {
+                    joint_index = (byte)jointIndex,
+                    joint_angle = angles[jointIndex]
+                };
 
-            ovisController.SendJointGoal(msg);
-        }
+                ovisController.SendJointGoal(msg);
+
+                lastUpdate = Time.realtimeSinceStartup;
+            }
+
+        } 
     }
 
     private void CycleNextJoint(InputAction.CallbackContext obj)

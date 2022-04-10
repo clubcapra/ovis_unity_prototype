@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 41565463}
   - component: {fileID: 41565462}
   - component: {fileID: 41565461}
+  - component: {fileID: 41565460}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -141,6 +142,79 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &41565460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41565459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2fadf230d1919748a9aa21d40f74619, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TrackingType: 0
+  m_UpdateType: 0
+  m_PositionInput:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Position
+      m_Type: 0
+      m_ExpectedControlType: Vector3
+      m_Id: aa0b853e-ef12-430e-9904-8b166c722492
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 35074272-5f60-40b1-9e82-f841a3837361
+        m_Path: <XRHMD>/centerEyePosition
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Position
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  m_RotationInput:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Rotation
+      m_Type: 0
+      m_ExpectedControlType: Quaternion
+      m_Id: 4a7bfb9d-19b2-49f0-ad0e-c24566bbebaf
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: dd4a42c1-3d5e-417a-abbf-d59748f8950a
+        m_Path: <XRHMD>/centerEyeRotation
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Rotation
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  m_PositionAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  m_RotationAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  m_HasMigratedActions: 1
 --- !u!81 &41565461
 AudioListener:
   m_ObjectHideFlags: 0
@@ -200,11 +274,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 41565459}
   m_LocalRotation: {x: -0.13250816, y: -0.84740436, z: 0.24993922, w: -0.4493082}
-  m_LocalPosition: {x: -0.83462113, y: 0.90868443, z: 0.31549197}
+  m_LocalPosition: {x: -0.22162116, y: -0.23431557, z: 0.24249198}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_Father: {fileID: 430595013}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &136388578
 GameObject:
@@ -743,6 +817,7 @@ Transform:
   m_Children:
   - {fileID: 136388579}
   - {fileID: 1016146899}
+  - {fileID: 41565463}
   m_Father: {fileID: 1989496642}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -853,6 +928,10 @@ PrefabInstance:
       propertyPath: rayCast
       value: 
       objectReference: {fileID: 1016146902}
+    - target: {fileID: 2692870950162665004, guid: 5e37a4065de34b444a2c5a3a48bf3af5, type: 3}
+      propertyPath: jointIndex
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2692870950162665005, guid: 5e37a4065de34b444a2c5a3a48bf3af5, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -903,7 +982,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2692870950162665007, guid: 5e37a4065de34b444a2c5a3a48bf3af5, type: 3}
       propertyPath: m_RosPort
-      value: 11311
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 2692870950162665007, guid: 5e37a4065de34b444a2c5a3a48bf3af5, type: 3}
       propertyPath: m_RosIPAddress
@@ -1661,7 +1740,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1698814331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1705,7 +1784,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1989496640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1727,7 +1806,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1989496639}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0cb9aa70a22847b5925ee5f067c10a9, type: 3}
   m_Name: 
