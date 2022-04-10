@@ -36,11 +36,15 @@ public class OvisController : MonoBehaviour
     {
         rosConn.Connect();
 
-        rosConn.SendServiceMessage<HomeJointResponse>(serviceHomePos, new HomeJointRequest(), OnHomePositions);
+        rosConn.RegisterRosService<HomeJointRequest, HomeJointResponse>(serviceHomePos);
+
+        rosConn.SendServiceMessage<HomeJointResponse>(serviceHomePos, new HomeJointRequest(), OnHomePositionsReceived);
     }
 
-    private void OnHomePositions(HomeJointResponse res)
+    private void OnHomePositionsReceived(HomeJointResponse res)
     {
+        Debug.Log("OnHomePositionsReceived");
+
         if (res.home_joint_positions.Length != joints.Length)
         {
             Debug.LogError($"OnHomePositions has {res.home_joint_positions.Length} joints but only {joints.Length} in the Editor");
@@ -52,14 +56,14 @@ public class OvisController : MonoBehaviour
             joints[i].SetHomePositionOffset(res.home_joint_positions[i]);
         }
 
-        rosConn.Subscribe<OvisJointAnglesMsg>(topicJointAngles, OnReceiveJointAngles);
+        rosConn.Subscribe<OvisJointAnglesMsg>(topicJointAngles, OnJointAnglesReceived);
 
-        //jointGoalController.Prepare(rosConn, res);
+        jointGoalController.Prepare(rosConn, res);
 
         OnValidate();
     }
 
-    private void OnReceiveJointAngles(OvisJointAnglesMsg msg)
+    private void OnJointAnglesReceived(OvisJointAnglesMsg msg)
     {
         if (msg.joint_angles.Length != joints.Length)
         {

@@ -7,45 +7,56 @@ public class JointController : MonoBehaviour
     public enum JointAxis { X, Y, Z }
 
     public JointAxis axis;
-    public float offset;
+    public Vector3 homeEulersOffset;
 
     public float GetAngularPosition()
     {
         switch (axis)
         {
             case JointAxis.X: 
-                return transform.localRotation.x - offset;
+                return transform.localEulerAngles.x - homeEulersOffset.x;
             case JointAxis.Y: 
-                return transform.localRotation.y - offset;
+                return transform.localEulerAngles.y - homeEulersOffset.y;
             case JointAxis.Z: 
-                return transform.localRotation.z - offset;
+                return transform.localEulerAngles.z - homeEulersOffset.z;
         }
 
         return 0;
     }
     public void SetAngularPosition(float angular)
     {
-        Vector3 localRot = transform.localRotation.eulerAngles;
+        Vector3 eulerAngles = homeEulersOffset;
 
         switch (axis)
         {
             case JointAxis.X:
-                localRot.x = angular + offset;
+                eulerAngles.x += angular;
                 break;
             case JointAxis.Y:
-                localRot.y = angular + offset;
+                eulerAngles.y += angular;
                 break;
             case JointAxis.Z:
-                localRot.z = angular + offset;
+                eulerAngles.z += angular;
                 break;
         }
 
-        transform.localRotation = Quaternion.Euler(localRot);
+        transform.localEulerAngles = eulerAngles;
     }
 
     public void SetHomePositionOffset(float homeOffset)
     {
-        offset -= homeOffset;
+        switch (axis)
+        {
+            case JointAxis.X:
+                homeEulersOffset.x -= homeOffset;
+                break;
+            case JointAxis.Y:
+                homeEulersOffset.y -= homeOffset;
+                break;
+            case JointAxis.Z:
+                homeEulersOffset.z -= homeOffset;
+                break;
+        }        
     }
 
 }

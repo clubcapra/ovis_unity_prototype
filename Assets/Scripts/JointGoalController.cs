@@ -21,7 +21,7 @@ public class JointGoalController : MonoBehaviour
     {
         rosConn = conn;
 
-        rosConn.RegisterPublisher<OvisJointGoalMsg>(topicJointGoal);
+        rosConn.RegisterPublisher<OvisJointGoalMsg>(topicJointGoal, 100);
 
         for (int i = 0; i < ghostJoints.Length; i++)
         {
@@ -37,6 +37,8 @@ public class JointGoalController : MonoBehaviour
             joint_index = (byte)jointIndex,
             joint_angle = ghostJoints[jointIndex].GetAngularPosition()
         };
+
+        Debug.Log($"{msg.joint_index}, {msg.joint_angle}");
 
         rosConn.Publish(topicJointGoal, msg);
     }
