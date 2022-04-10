@@ -44,6 +44,26 @@ public class JointController : MonoBehaviour
         transform.localEulerAngles = eulerAngles;
     }
 
+    public void MoveAngularPosition(float angular)
+    {
+        Vector3 eulerAngles = transform.localEulerAngles;
+
+        switch (axis)
+        {
+            case JointAxis.X:
+                eulerAngles.x += angular;
+                break;
+            case JointAxis.Y:
+                eulerAngles.y += angular;
+                break;
+            case JointAxis.Z:
+                eulerAngles.z += angular;
+                break;
+        }
+
+        transform.localEulerAngles = eulerAngles;
+    }
+
     public void SetHomePositionOffset(float homeOffset)
     {
         switch (axis)

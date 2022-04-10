@@ -159,11 +159,6 @@ public class InputController : Controller
             default:
                     break;
             }
-
-
-        //Debug.Log("deprecated : " + rayCast.selectTarget);
-        //Debug.Log("deprecated to string : " + rayCast.selectTarget.ToString());
-        //Debug.Log("my parent name is : " + rayCast.firstInteractableSelected.transform.parent.name);
     }
 
     void SetSelectedJointIndex(int index)

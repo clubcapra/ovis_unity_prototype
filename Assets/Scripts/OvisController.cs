@@ -14,7 +14,7 @@ public class OvisController : MonoBehaviour
     public enum ControlMode { JointByJoint, Target }
 
     public ControlMode controlMode = ControlMode.JointByJoint;
-
+    public string rosNameSpace = "/markhor/";
     public string topicJointAngles = "ovis/joint_angles";
     public string topicJointGoal = "ovis/joint_goal";
 
@@ -33,13 +33,19 @@ public class OvisController : MonoBehaviour
 
     private void OnEnable()
     {
+        Debug.Log("enalbe ou whatever la kekchose de there you go easy");
         rosConn.Connect();
+
+        topicJointAngles = rosNameSpace + topicJointAngles;
+        topicJointGoal = rosNameSpace + topicJointGoal;
+        serviceHomePos = rosNameSpace + serviceHomePos;
 
         rosConn.RegisterRosService<HomeJointRequest, HomeJointResponse>(serviceHomePos);
 
         rosConn.SendServiceMessage<HomeJointResponse>(serviceHomePos, new HomeJointRequest(), OnHomePositionsReceived);
 
         rosConn.RegisterPublisher<OvisJointGoalMsg>(topicJointGoal, 100);
+
     }
 
     public void SendJointGoal(OvisJointGoalMsg jointGoal)

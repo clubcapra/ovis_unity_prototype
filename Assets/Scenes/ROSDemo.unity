@@ -130,12 +130,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1680999736}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 52963724f1c4b9c4eb1aec59f9c5a595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   controlMode: 0
+  rosNameSpace: /markhor/
   topicJointAngles: ovis/joint_angles
   topicJointGoal: ovis/joint_goal
   serviceHomePos: ovis/home_joint_positions
@@ -146,7 +147,7 @@ MonoBehaviour:
   - {fileID: 1315981969517425258}
   - {fileID: 2476150363026224493}
   - {fileID: 6651178746335107036}
-  rosConn: {fileID: 0}
+  rosConn: {fileID: 1680999737}
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,7 +309,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6404560914452739932}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -470,7 +471,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3639012306693517963}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -604,7 +605,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8025419747456470155}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -790,7 +791,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2458675319697947766}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -1403,7 +1404,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7612963428815060151}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -1898,7 +1899,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8730872746555270922}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -1912,7 +1913,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6546571109193439024}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -2105,7 +2106,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 771590676419348646}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -2509,7 +2510,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7612963428823641225}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -2690,7 +2691,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6546571110633185171}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -3481,7 +3482,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 776642217028686819}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -3897,8 +3898,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1680999739}
   - component: {fileID: 5}
-  - component: {fileID: 7714487644097300558}
   - component: {fileID: 1680999737}
+  - component: {fileID: 1680999738}
   m_Layer: 0
   m_Name: Ovis
   m_TagString: robot
@@ -3918,8 +3919,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7acef0b79454c9b4dae3f8139bc4ba77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RosIPAddress: 192.168.1.21
-  m_RosPort: 10000
+  m_RosIPAddress: 192.168.0.107
+  m_RosPort: 11311
   m_ConnectOnStart: 1
   m_KeepaliveTime: 1
   m_NetworkTimeoutSeconds: 2
@@ -3928,6 +3929,21 @@ MonoBehaviour:
   m_TFTopics:
   - /tf
   listenForTFMessages: 1
+--- !u!114 &1680999738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1680999736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84538f91798a05a4a91cfbc10fa1ac40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jointIndex: 0
+  speed: 500
+  selectedMaterial: {fileID: 2100000, guid: 4c39009913b977e468ac135844cb8f67, type: 2}
 --- !u!4 &1680999739
 Transform:
   m_ObjectHideFlags: 0
@@ -4224,7 +4240,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8025419746219323111}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -4238,7 +4254,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5146269948051398436}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -4252,7 +4268,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5146269948051398436}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -4266,7 +4282,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5146269948051398436}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -4901,7 +4917,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4701114797867243827}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -5208,7 +5224,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 771590675637522923}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -5387,7 +5403,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4217330435286478594}
   - component: {fileID: 2118510982}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: robotiq_arg2f_140_outer_finger_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5404,7 +5420,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4217330435445487183}
   - component: {fileID: 943307965}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: robotiq_arg2f_140_outer_finger_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5442,7 +5458,7 @@ GameObject:
   - component: {fileID: 1597248506}
   - component: {fileID: 1597248505}
   - component: {fileID: 1597248504}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ovis_upper_arm_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6014,7 +6030,7 @@ GameObject:
   - component: {fileID: 378416408359691320}
   - component: {fileID: 281076159}
   - component: {fileID: 281076158}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ovis_wrist_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6367,7 +6383,7 @@ GameObject:
   - component: {fileID: 714761362478028530}
   - component: {fileID: 200293230}
   - component: {fileID: 200293229}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ovis_shoulder_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6662,7 +6678,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6769610898049086355}
   - component: {fileID: 2035649122}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: robotiq_arg2f_base_link_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6888,7 +6904,7 @@ GameObject:
   - component: {fileID: 1785338561}
   - component: {fileID: 1785338560}
   - component: {fileID: 1785338559}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ovis_forearm_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7292,7 +7308,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6605998306346539314}
   - component: {fileID: 54940164}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ovis_flange_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7339,7 +7355,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5513275726047671698}
   - component: {fileID: 909424655}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: robotiq_arg2f_140_inner_finger_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7356,7 +7372,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5513275724468174129}
   - component: {fileID: 1200702943}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: robotiq_arg2f_140_inner_finger_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7604,7 +7620,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5044140921599460862}
   - component: {fileID: 697476326}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: robotiq_arg2f_140_outer_knuckle_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7621,7 +7637,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5044140921607656896}
   - component: {fileID: 1099799338}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: robotiq_arg2f_140_outer_knuckle_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7660,21 +7676,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &7714487644097300558
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1680999736}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84538f91798a05a4a91cfbc10fa1ac40, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jointIndex: 0
-  speed: 500
-  selectedMaterial: {fileID: 2100000, guid: 4c39009913b977e468ac135844cb8f67, type: 2}
 --- !u!1 &8025419746219323111
 GameObject:
   m_ObjectHideFlags: 0
@@ -7685,7 +7686,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9009689380002677608}
   - component: {fileID: 1772316429}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: robotiq_arg2f_140_inner_knuckle_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7702,7 +7703,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9009689378161287428}
   - component: {fileID: 239655865}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: robotiq_arg2f_140_inner_knuckle_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7764,7 +7765,7 @@ GameObject:
   - component: {fileID: 5886540871158497406}
   - component: {fileID: 906513225}
   - component: {fileID: 906513224}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ovis_elbow_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
