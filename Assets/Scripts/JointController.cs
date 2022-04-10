@@ -8,6 +8,7 @@ public class JointController : MonoBehaviour
 
     public JointAxis axis;
     public Vector3 homeEulersOffset;
+    public MeshRenderer visual;
 
     public float GetAngularPosition()
     {

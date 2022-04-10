@@ -16,20 +16,19 @@ public class OvisController : MonoBehaviour
     public ControlMode controlMode = ControlMode.JointByJoint;
 
     public string topicJointAngles = "ovis/joint_angles";
+    public string topicJointGoal = "ovis/joint_goal";
+
     public string serviceHomePos = "ovis/home_joint_positions";
 
+    public Action OnHomeReceived;
+
     public JointController[] joints;
-
-    private ROSConnection rosConn;
-
-    private JointGoalController jointGoalController;
+    public ROSConnection rosConn;
 
     void Awake()
     {
-        rosConn = GetComponent<ROSConnection>();
-
-        jointGoalController = GetComponent<JointGoalController>();
-        jointGoalController.enabled = false;
+        if(rosConn == null)
+            rosConn = GetComponent<ROSConnection>();
     }
 
     private void OnEnable()
@@ -39,6 +38,13 @@ public class OvisController : MonoBehaviour
         rosConn.RegisterRosService<HomeJointRequest, HomeJointResponse>(serviceHomePos);
 
         rosConn.SendServiceMessage<HomeJointResponse>(serviceHomePos, new HomeJointRequest(), OnHomePositionsReceived);
+
+        rosConn.RegisterPublisher<OvisJointGoalMsg>(topicJointGoal, 100);
+    }
+
+    public void SendJointGoal(OvisJointGoalMsg jointGoal)
+    {
+        rosConn.Publish(topicJointGoal, jointGoal);
     }
 
     private void OnHomePositionsReceived(HomeJointResponse res)
@@ -58,9 +64,7 @@ public class OvisController : MonoBehaviour
 
         rosConn.Subscribe<OvisJointAnglesMsg>(topicJointAngles, OnJointAnglesReceived);
 
-        jointGoalController.Prepare(rosConn, res);
-
-        OnValidate();
+        OnHomeReceived?.Invoke();
     }
 
     private void OnJointAnglesReceived(OvisJointAnglesMsg msg)
@@ -77,16 +81,8 @@ public class OvisController : MonoBehaviour
         }
     }
 
-    private void OnValidate()
-    {
-        if(jointGoalController != null)
-            jointGoalController.enabled = controlMode == ControlMode.JointByJoint;
-    }
-
     private void OnDisable()
     {
-        jointGoalController.enabled = false;
-
         rosConn.Disconnect();
     }
 }

@@ -5,41 +5,74 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Robotics.ROSTCPConnector;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(OvisController))]
 public class JointGoalController : MonoBehaviour
 {
-    public string topicJointGoal = "ovis/joint_goal";
-
-    public JointController[] ghostJoints;
-
     public int jointIndex = 0;
+    public float speed = 500;
 
-    private ROSConnection rosConn;
+    public Material selectedMaterial;
 
-    public void Prepare(ROSConnection conn, HomeJointResponse res)
+    private Material lastMaterial;
+    private OvisController ovisController;
+    private Keyboard keyboard;
+
+    private void Awake()
     {
-        rosConn = conn;
+        keyboard = Keyboard.current;
 
-        rosConn.RegisterPublisher<OvisJointGoalMsg>(topicJointGoal, 100);
+        ovisController = GetComponent<OvisController>();
 
-        for (int i = 0; i < ghostJoints.Length; i++)
+        ovisController.OnHomeReceived += () => 
         {
-            ghostJoints[i].SetHomePositionOffset(res.home_joint_positions[i]);
-        }
+            lastMaterial = ovisController.joints[jointIndex].visual.material;
+            ovisController.joints[jointIndex].visual.material = selectedMaterial;
+            enabled = true; 
+        };
+    }
+
+    private void SwitchJoint(int newJointIndex)
+    {
+        ovisController.joints[jointIndex].visual.material = lastMaterial;
+
+        lastMaterial = ovisController.joints[newJointIndex].visual.material;
+        ovisController.joints[newJointIndex].visual.material = selectedMaterial;
+        jointIndex = newJointIndex;
     }
 
     // Update is called once per frame
     void Update()
     {
-        var msg = new OvisJointGoalMsg 
+        int direction = 0;
+        if (keyboard[Key.UpArrow].isPressed)
+            direction = 1;
+        else if (keyboard[Key.DownArrow].isPressed)
+            direction = -1;
+
+        if (keyboard[Key.E].wasPressedThisFrame && jointIndex + 1 < ovisController.joints.Length)
         {
-            joint_index = (byte)jointIndex,
-            joint_angle = ghostJoints[jointIndex].GetAngularPosition()
-        };
+            SwitchJoint(jointIndex + 1);
+        }
+        else if (keyboard[Key.Q].wasPressedThisFrame && jointIndex - 1 >= 0)
+        {
+            SwitchJoint(jointIndex - 1);
+        }
 
-        Debug.Log($"{msg.joint_index}, {msg.joint_angle}");
+        if (direction != 0)
+        {
+            float movement = speed * direction * Time.deltaTime;
 
-        rosConn.Publish(topicJointGoal, msg);
+            var msg = new OvisJointGoalMsg
+            {
+                joint_index = (byte)jointIndex,
+                joint_angle = ovisController.joints[jointIndex].GetAngularPosition() + movement
+            };
+
+            Debug.Log($"{msg.joint_index}, {msg.joint_angle}");
+
+            ovisController.SendJointGoal(msg);
+        }
     }
 }
